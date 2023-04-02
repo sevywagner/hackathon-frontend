@@ -10,6 +10,7 @@ import Contact from './pages/Contact';
 import Order from './pages/Order';
 import Book from './pages/Book';
 import Donate from './pages/Donate';
+import colors from './constants/colors';
 
 const BottomTabs = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -18,9 +19,9 @@ const TabsNavigator = () => {
   return (
     <BottomTabs.Navigator screenOptions={{
       headerStyle: {
-        backgroundColor: 'white',
+        backgroundColor: colors.main,
       },
-      headerTintColor: 'black',
+      headerTintColor: 'white',
       tabBarActiveTintColor: 'rgb(92, 0, 0)'
     }}>
       <BottomTabs.Screen 

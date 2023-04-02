@@ -25,12 +25,13 @@ const Contact = () => {
     const submitHandler = () => {
         let error = false;
 
-        fetch('https://blood-app-backend.herokuapp.com/contact', {
+        fetch('https://hackathon-backend.herokuapp.com/contact', {
             method: 'POST',
             body: JSON.stringify({
                 email: email,
                 message: message
             }),
+            mode: 'cors',
             headers: {
                 "Content-Type": "application/json"
             }

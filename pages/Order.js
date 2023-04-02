@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button, ScrollView, StyleSheet, View, TextInput, Text, Pressable } from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import TimeBox from '../components/order/TimeBox';
@@ -15,6 +15,7 @@ export default Order = ({ navigation }) => {
     const [slide, setSlide] = useState(1);
     const [payout, setPayout] = useState();
     const [error, setError] = useState();
+
   
     const dateChangeHandler = (event, selectedDate) => {
       setDate(selectedDate);
@@ -52,45 +53,52 @@ export default Order = ({ navigation }) => {
 
     const submitHandler = () => {
       let error = false;
-      fetch('https://blood-app-backend.herokuapp.com/orders', {
-            method: 'POST',
-            body: JSON.stringify({
-                name,
-                address,
-                email,
-                date,
-                time,
-                amount,
-                payout
-            }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then((response) => {
-          if (!response.ok) {
-            error = true;
-          }
-          return response.json();
-        }).then((data) => {
-            if (error) {
-              console.log(data.error);
-              setError(data.error);
-            } else {
-              console.log(data.message);
-              navigation.navigate('Home')
-              setName('');
-              setAddress('');
-              setEmail('');
-              setSlide(1);
-              setAmount(0);
-              setDate(new Date());
-              setTime(date);
-            }
-        }).catch((err) => {
-          console.log(err);
-        });
+      fetch('https://hackathon-backend.herokuapp.com/orders', {
+        method: 'POST',
+        body: JSON.stringify({
+          date,
+          time,
+          name,
+          email,
+          address,
+          amount,
+          payout
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then((response) => {
+        if (!response.ok) {
+          error = true;
+        }
+        return response.json();
+      }).then((data) => {
+        if (error) {
+          return console.log(data.error);
+        }
+        console.log(data.message)
+        navigation.navigate('Home');
+        setName('');
+        setAddress('');
+        setEmail('');
+        setSlide(1);
+        setAmount(0);
+        setDate(new Date());
+        setTime(date);
+      }).catch((err) => console.log(err));
     }
 
+    // let day;
+    // useEffect(() => {
+    //   let stamps;
+    //   fetch('https://hackathon-backend.herokuapp.com/time-stamps', {
+    //     method: 'GET'
+    //   }).then((response) => response.json()).then((data) => {
+    //     setDay(tempDay);
+        
+    //   });
+      
+    // }, []);
     
     const day = times.find((t) => t.day === date.toDateString().split(' ')[0]);
   
